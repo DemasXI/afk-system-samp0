@@ -1,0 +1,52 @@
+//credit please dont delete : demasxi.
+#include <a_samp>
+
+#pragma tabsize 0 //For removing errors
+
+new Float:PosX[MAX_PLAYERS], Float:PosY[MAX_PLAYERS], Float:PosZ[MAX_PLAYERS], Float:PosA[MAX_PLAYERS], PosI[MAX_PLAYERS]; //
+
+public OnFilterScriptInit()
+{
+	print("\n--------------------------------------");
+	print("!!!DemasXi AFK system has been loaded!!!");
+	print("--------------------------------------\n");
+	return 1;
+}
+
+public OnPlayerCommandText(playerid, cmdtext[])
+{
+if(strcmp(cmdtext, "/afk", true) == 0)
+	{
+	new string[256];
+ 	GetPlayerPos(playerid, PosX[playerid], PosY[playerid], PosZ[playerid]);
+	GetPlayerFacingAngle(playerid, PosA[playerid]);
+ 	PosI[playerid] = (GetPlayerInterior(playerid));
+ 	
+	SetPlayerInterior(playerid,3);
+	SetPlayerPos(playerid,198.3797,160.8905,1003.0300);
+	SetPlayerFacingAngle(playerid,177.0350);
+	SetCameraBehindPlayer(playerid);
+	
+	TogglePlayerControllable(playerid,0);
+	new away[MAX_PLAYER_NAME];
+	GetPlayerName(playerid, away, MAX_PLAYER_NAME);
+	format(string, sizeof(string), "%s is now in AFK!", away);
+	GameTextForAll(string, 4000, 6);
+	return 1;
+	}
+if(strcmp(cmdtext, "/back", true) == 0)
+	{
+	SetPlayerPos(playerid, PosX[playerid], PosY[playerid], PosZ[playerid]);
+	SetPlayerFacingAngle(playerid, PosA[playerid]);
+	SetCameraBehindPlayer(playerid);
+	SetPlayerInterior(playerid, PosI[playerid]);
+	new string[256];
+	TogglePlayerControllable(playerid,1);
+	new back[MAX_PLAYER_NAME];
+	GetPlayerName(playerid, back, MAX_PLAYER_NAME);
+	format(string, sizeof(string), "%s is BACK from AFK!", back);
+	GameTextForAll(string, 4000, 6);
+	return 1;
+ }
+	return 0;
+}
